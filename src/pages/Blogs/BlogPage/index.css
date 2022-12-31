@@ -1,0 +1,5 @@
+.blog-content ul, .blog-content ol{
+    margin: 0 0 0 1.5em;
+    padding: 0;
+    list-style-position: inside;
+}
