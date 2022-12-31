@@ -1,70 +1,141 @@
-# Getting Started with Create React App
+## Architecture
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![](/public/images/cra_netlify_arch.png)
 
-## Available Scripts
+* Github as acts as the repository and version control tool for all our code
+* Netlify hosts the static Web Assets and makes your Application publicly accessible. The following are hosted:
+  * Main webpage (includes Landing Page and Blogs) is written in React
+  * Web page embedded with Netlify CMS UI is hosted
+* Netlify Identity is used so the owner of the application can login and use the Netlify CMS securely
+* Netlify Functions is a feature that makes it easy for you to set up JS functions that can be triggered by an API request
+* When the user makes changes/adds new application content via CMS, Netlify publishes those changes directly to Github *(this is important, since traditionally CMS' save data to a database, but here Netlify saves the data within source control)*
 
-In the project directory, you can run:
+## G﻿etting Started
 
-### `npm start`
+Here's how you can set up and use this Application for your self
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Step 01: Copy Repo to Github
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Clone or fork <https://github.com/gugzkumar/create-react-app-with-netlify-cms>
 
-### `npm test`
+### Step 02: Create a Netlify Account
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Create an account in [Netlify](https://www.netlify.com) if you don’t have one
 
-### `npm run build`
+### Step 03: Set up your site in Netlify
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Follow the instructions in <https://docs.netlify.com/welcome/add-new-site/> for importing from an existing repository. Use your github repository from step 1.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+For build settings you can use the following:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Base directory: root of the project (you can leave this blank)
+* Build command: `npm run build`
+* Publish directory: `build`
 
-### `npm run eject`
+From here, feel free to choose your own domain, and secure the website with https.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Step 04: Set up Netlify Identity
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Once your site is up and running, go to you site settings and enable Netlify Identity. Then scroll all the way down and enable git gateway. 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![](/public/images/netlify_identity.png)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Got to https://\[your_website_name].netlify.app/admin sign up for account. Confirm it. Now you can log in and use the Netlify CMS. Try adding a new blog.
 
-## Learn More
+![](/public/images/netlify_cms_signup.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Finally go and disable sign ups for your website in the Netlify Identity settings.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Using and Adding New Features
 
-### Code Splitting
+### Folder Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
+├── cmsContent/
+│   └── blogs/
+│       ├── *.json
+├── netlify/
+│   └── functions/
+│       └── *.js
+├── public/
+│   ├── admin/
+│   │   ├── config.yml
+│   │   └── index.html
+│   ├── content/
+│   ├── images/
+│       └── *.js
+│   ├── _redirects
+│   └── index.html
+├── src/
+│   ├── cmsConfigs/
+│   ├── components/
+│   │   ├── Footer/
+│   │   └── Header/
+│   ├── pages/
+│   │   ├── Blogs/
+│   │   └── Landing/
+│   ├── styles/
+│   │   ├── Button.js
+│   │   ├── consts.js
+│   │   └── theme.js
+│   ├── App.js
+│   └── index.js
+├── buildCMSContent.js
+├── netlify.toml
+└── package.json
+```
 
-### Analyzing the Bundle Size
+If you are familiar with [Create a React App](<https://github.com/facebook/create-react-app>), then a lot of the files should be familiar to you. I suggest you do read its documentation, since it can help you with this app too. I won't describe the purpose of ever file and folder, just the one's I think are important to know and may not get covered in Create a React App.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **cmsContent/:** where CMS content is saved
+- **netlify/functions/:** houses JS Functions hosted by netlify functions
+- **public/:** hosts static assets
+- **public/admin/config.yml:** Netlify CMS' configuration file
+- **public/content/:** build directory for all CMS content
+- **public/images/:** where CMS images are saved
+- **src/:** source code for react app
+- **src/cmsConfigs/:** where CMS content meta information is preprocessed and saved so it can be used by react
+- **src/components/:** where dumb/shareable React components are saved
+- **src/pages/:** where Page specific components are saved
+- **src/styles/:** universal style configurations and constants
+- **src/App.js:** main React component that acts as the root of the project
+- **buildCMSContent.js:** helper script that moves content from `cmsContent` into the `public/content` folder, and creates 
+- **netlify.toml:** netlfy's configuration file
+- **package.json:** node's package manager configuration
 
-### Making a Progressive Web App
+### Running Locally
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+* Having node is installed is pre-requisite for running the app locally
+* Install the netlify cli `npm install netlify-cli -g`
+* Install all dependencies: `npm install`
+* Run `node buildCMSContent.js` to build the CMS content locally so you can see them during local development
+* Run `netlify dev`
+* The application is now hosted statically on <http://localhost:8888>
 
-### Advanced Configuration
+**Important:** If new content has been added via CMS, rerun `node buildCMSContent.js` to see the latest content locally.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Adding a new blog
 
-### Deployment
+Log in to https://\[your_website_name].netlify.app/admin and use the CMS to add a new blog.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Adding a new collection for the CMS
 
-### `npm run build` fails to minify
+To add a new collection for your CMS (Blogs collection is setup by default), add to the configuration file in `public/admin/config.yml`. Read Netlify's Documentation for more guidance:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- <https://www.netlifycms.org/docs/configuration-options/#collections>
+- <https://www.netlifycms.org/docs/collection-types/>
+
+Make sure the `folder` field value is `"cmsContent/<name>"` where `<name>` is the value of the `<name>` field
+
+### Styling
+
+The application is setup to use [Chakra UI](<https://chakra-ui.com/>) and [@emotion/styled](<https://emotion.sh/docs/styled>) to handle styling. You can update and variants for Chakra UI components by updating the files in `src/styles/`. This will keep the theming of our Web App more consistent. Read for more info:
+
+- <https://chakra-ui.com/docs/styled-system/customize-theme>
+- <https://chakra-ui.com/docs/styled-system/component-style>
+
+### Functions
+
+Netlify has a nifty feature called [Neltify Functions](<https://www.netlify.com/products/functions/>). This allows you to host JS functions that can be triggered by and HTTPS request. We have one setup for you out of the box in `netlify/functions`. Try it out by visiting the following URL in your browser: `https://[your_website_name].app/.netlify/functions/hello`
+
+If you want to add a new function, just add a javascript file to the `netlify/functions/` folder, and the endpoint will be `https://[your_website_name].app/.netlify/functions/<file_name>`.
