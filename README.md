@@ -1,3 +1,9 @@
+# Building a CMS Powered Blog With Create React App and Netlify
+
+<img src="/public/images/react-plus-netlify.png" width="500px"/>
+
+This guide will show you how you can setup your own blogging website using Create a React App and Netlify. We take advantage of Netlify's easy to use CMS and hosting platform, and Create a React Apps flexibility. This makes the setup as simple as possible so you can start blogging immediately, while still allowing room for further customization and adding new features to your Web App.
+
 ## Architecture
 
 ![](/public/images/cra_netlify_arch.png)
